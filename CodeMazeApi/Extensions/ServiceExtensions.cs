@@ -1,13 +1,16 @@
 ﻿using Contracts;
+using Entities;
 using LoggerService;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CodeMazeApi.Extensons
+namespace CodeMazeApi.Extensions
 {
     public static class ServiceExtensions
     {
@@ -29,5 +32,10 @@ namespace CodeMazeApi.Extensons
 
         public static void ConfigureLogService(this IServiceCollection services) =>
             services.AddScoped<ILoggerManager, LoggerManager>();
+
+        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) => 
+            services.AddDbContext<RepositoryContext>(opts => 
+            opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b =>
+             b.MigrationsAssembly("CodeMazeApi")));
     }
 }
