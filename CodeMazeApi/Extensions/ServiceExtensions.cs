@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,17 +26,21 @@ namespace CodeMazeApi.Extensions
             });
         }
 
-        public static void ConfigureIISIntegration(this IServiceCollection services) => 
-            services.Configure<IISOptions>(options => { 
-                
+        public static void ConfigureIISIntegration(this IServiceCollection services) =>
+            services.Configure<IISOptions>(options =>
+            {
+
             });
 
         public static void ConfigureLogService(this IServiceCollection services) =>
             services.AddScoped<ILoggerManager, LoggerManager>();
 
-        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) => 
-            services.AddDbContext<RepositoryContext>(opts => 
+        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
+            services.AddDbContext<RepositoryContext>(opts =>
             opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b =>
              b.MigrationsAssembly("CodeMazeApi")));
+
+        public static void ConfigureRepositoryManager(this IServiceCollection services) =>
+            services.AddScoped<IRepositoryManager, RepositoryManager>();
     }
 }

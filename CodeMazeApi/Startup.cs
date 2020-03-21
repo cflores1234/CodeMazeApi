@@ -34,6 +34,7 @@ namespace CodeMazeApi
             services.ConfigureIISIntegration();
             services.ConfigureLogService();
             services.ConfigureSqlContext(Configuration);
+            services.ConfigureRepositoryManager();
 
             services.AddControllers();
         }
